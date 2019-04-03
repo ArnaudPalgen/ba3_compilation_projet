@@ -15,7 +15,7 @@ firstNode = None
 
 
 def p_expression_programme(p):
-    """programme: TEXT
+    """programme : TEXT
     | TEXT programme
     | dumboBloc 
     | dumboBloc programme"""
@@ -26,19 +26,19 @@ def p_expression_programme(p):
 
 
 def p_expression_txt(p):
-    """expression: TEXT """
+    """expression : TEXT """
     p[0] = Node("text", [p[1]])
 
 
 def p_expression_dumboBloc(p):
-    """dumboBloc: START_BLOC expression END_BLOC"""
+    """dumboBloc : START_BLOC expression END_BLOC"""
     p[0] = Node("dumbo_bloc", [p[1], p[2], p[3]])
     # p[0]=p[2]
     # meme chose que pour p_parent tp3
 
 
 def p_expression_expression_list(p):
-    """ expression: expression END_EXPRESSION
+    """ expression : expression END_EXPRESSION
                   | expression END_EXPRESSION expression"""
     if len(p) == 3:
         p[0] = Node("expression_list", [p[1], p[2]])
@@ -47,7 +47,7 @@ def p_expression_expression_list(p):
 
 
 def p_expression_expression(p):
-    """expression: VARIABLE ASSIGNATION expression
+    """expression : VARIABLE ASSIGNATION expression
 		 | PRINT expression 
          | FOR VARIABLE IN expression DO expression ENDFOR"""
     if len(p) == 4:
@@ -59,7 +59,7 @@ def p_expression_expression(p):
 
 
 def p_expression_string_expression(p):
-    """expression: STRING
+    """expression : STRING
 	         | VARIABLE
                  | expression POINT expression"""
     if len(p) == 2:
@@ -69,12 +69,12 @@ def p_expression_string_expression(p):
 
 
 def p_expression_string_list(p):
-    """expression: LPARENT expression RPARENT"""
+    """expression : LPARENT expression RPARENT"""
     p[0] = Node("expression_string_list", [p[1], p[2], p[3]])
 
 
 def p_expression_string_list_interior(p):
-    """expression: STRING 
+    """expression : STRING 
                  | STRING VIRGULE expression"""
     if len(p) == 2:
         p[0] = Node("string_list_interior", [p[1]])
@@ -83,7 +83,7 @@ def p_expression_string_list_interior(p):
 
 
 def p_expression_string(p):
-    """expression: STRING"""
+    """expression : STRING"""
     p[0] = Node("string", [p[1]])
 
 

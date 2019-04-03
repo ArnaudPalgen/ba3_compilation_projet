@@ -1,6 +1,6 @@
 import ply.lex as lex
 
-#TODO peut etre table des symboles
+# TODO peut etre table des symboles
 bloc_open = 0
 
 tokens = (
@@ -146,10 +146,11 @@ def t_error(t):
     t.lexer.skip(1)
 
 
+lexer = lex.lex()
+
 if __name__ == "__main__":
     import sys
 
-    lexer = lex.lex()
     lexer.input(sys.stdin.read())
     for token in lexer:
         print("line %d : %s (%s) " % (token.lineno, token.type, token.value))
