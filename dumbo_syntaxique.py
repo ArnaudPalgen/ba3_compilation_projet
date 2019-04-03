@@ -2,72 +2,101 @@ import ply.yacc as yacc
 from dumbo_lexical import tokens
 
 
-class Node(object):
-    
-    def __init__(self, t_value, t_type):
-        self.t_value=t_value
-        self.t_type=t_type
-        self.childs=[]
-    
-    def addChild(self, child):
-        self.childs.append(child)
+class Node:
+    def __init__(self, p_type, leaf=[], children=[]):
+        self.leaf = leaf
+        self.p_type = p_type
+        self.children = children
+
+    def isLeaf(self):
+        return len(self.children) == 0
 
 
-#def p_expression_programme(p):
-    #"""expression: TEXT
-		 #| TEXT expression
-		 #| dumboBloc doit-on créer un token dumboBloc?
-		 #| dumboBloc expression""" 
-    #p[0]=p[1]
+firstNode = None
+
+
+def p_expression_programme(p):
+    """programme: TEXT
+    | TEXT programme
+    | dumboBloc 
+    | dumboBloc programme"""
+    if len(p) == 2:
+        p[0] = Node("programme", [p[1]], [])
+    elif len(p) == 3:
+        p[0] = Node("programme", [])
+
 
 def p_expression_txt(p):
     """expression: TEXT """
+    p[0] = Node("text", [p[1]], [])
+
 
 def p_expression_dumboBloc(p):
-    """expression: START_BLOC expression END_BLOC"""
-    p[0]=p[2]
+    """dumboBloc: START_BLOC expression END_BLOC"""
+    p[0] = Node("dumbo_bloc", [p[1], p[3]], [p[2]])
+    # p[0]=p[2]
     # meme chose que pour p_parent tp3
+
 
 def p_expression_expression_list(p):
     """ expression: expression END_EXPRESSION
                   | expression END_EXPRESSION expression"""
-    p[0]=?
+    if len(p) == 3:
+        p[0] = Node("expression_list", [p[2]], [p[1]])
+    elif len(p) == 4:
+        p[0] = Node("expression_list", [p[2]], [p[1], p[3]])
+
 
 def p_expression_expression(p):
     """expression: VARIABLE ASSIGNATION expression
-		 | PRINT expression"""
-    p[0]=p[2]
+		 | PRINT expression 
+         | FOR VARIABLE IN expression DO expression ENDFOR"""
+    if len(p) == 4:
+        p[0] = Node("expression", [p[1], p[2]], [p[3]])
+    elif len(p) == 3:
+        p[0] = Node("expression", [p[1]], [p[2]])
+    elif len(p) == 8:
+        p[0] = Node("expression", [p[1], p[2], p[3], p[5], p[7]], [p[4], p[6]])
 
-def p_expression_expression(p):
-    """expression: FOR VARIABLE IN expression DO expression ENDFOR"""
-    p[0]=?
 
 def p_expression_string_expression(p):
     """expression: STRING
 	         | VARIABLE
                  | expression POINT expression"""
-    p[0]=? 
+    if len(p) == 2:
+        p[0] = Node("string_expression", [p[1]], [])
+    elif len(p) == 4:
+        p[0] = Node("string_expression", [p[2]], [p[1], p[3]])
+
 
 def p_expression_string_list(p):
     """expression: LPARENT expression RPARENT"""
-    p[0] = p[2]
+    p[0] = Node("expression_string_list", [p[1], p[3]], [p[2]])
+
 
 def p_expression_string_list_interior(p):
     """expression: STRING 
                  | STRING VIRGULE expression"""
-    p[0]=?
+    if len(p) == 2:
+        p[0] = Node("string_list_interior", [p[1]], [p[0]])
+    elif len(p) == 4:
+        p[0] = Node("string_list_interior", [p[1], p[2]], [p[3]])
+
 
 def p_expression_string(p):
     """expression: STRING"""
-    p[0]=p[1]
+    p[0] = Node("string", [p[1]], [])
+
 
 def p_expression_variable(p):
     """expression : VARIABLE """
-    p[0]=p[1]
+    p[0] = Node("variable", [p[1]], [])
+
 
 def p_error(p):
-    print("Syntax error in line {}" .format(p.lineno))
+    print("Syntax error in line {}".format(p.lineno))
     yacc.error()
+
 
 yacc.yacc(outputdir="generated")
 
