@@ -13,12 +13,13 @@ tokens = (
     "STRING",
     "TEXT",
     "VARIABLE",
-    "INSTRUCTION",
+    "PRINT",
     "END_EXPRESSION",
     "ASSIGNATION",
     "LPARENT",
     "RPARENT",
-    "PONCTUATION",
+    "POINT",
+    "VIRGULE",
 )
 
 t_ignore = " \t"
@@ -79,18 +80,22 @@ def t_END_BLOC(t):
     return t
 
 
-def t_INSTRUCTION(t):
+def t_PRINT(t):
     r"print"
     t.value = str(t.value)
 
     return t
 
 
-def t_PONCTUATION(t):
-    r"\.|,"
+def t_POINT(t):
+    r"\."
     t.value = str(t.value)
     return t
 
+def t_VIRGULE(t):
+    r","
+    t.value=str(t.value)
+    return t
 
 def t_ASSIGNATION(t):
     r":="
