@@ -1,13 +1,15 @@
 import ply.yacc as yacc
+import dumbo_lexical as lex
 from dumbo_lexical import tokens
 
 
 class Node:
-    def __init__(self, p_type, children=[]):
+    def __init__(self, p_type, children=[], value=None):
         self.p_type = p_type
         self.children = children
+        self.value=value
 
-    def isLeaf(self):
+    def is_leaf(self):
         return len(self.children) == 0
     def __str__(self):
         return self.p_type
@@ -79,12 +81,12 @@ def p_expression_string_list_interior(p):
 
 def p_expression_string(p):
     """string : STRING"""
-    p[0] = Node("string")
+    p[0] = Node("string", value=p[1])
 
 
 def p_expression_variable(p):
     """variable : VARIABLE """
-    p[0] = Node("variable")
+    p[0] = Node("variable", value=p[1])
 
 
 def p_expression_print(p):
@@ -94,7 +96,7 @@ def p_expression_print(p):
 
 def p_expression_txt(p):
     """text : TEXT """
-    p[0] = Node("text")
+    p[0] = Node("text", value=p[1])
 
 
 def p_expression_start_bloc(p):
@@ -159,7 +161,7 @@ def p_expression_virgule(p):
 
 def printTree(node):
     if node is not None:
-        print(node)
+        print(node, ": ", node.value)
         for child in node.children:
             printTree(child)
 
@@ -170,6 +172,10 @@ def p_error(p):
 
 
 yacc.yacc(outputdir="generated")
+
+def analyse(file):
+    f=open(file).read()
+    return yacc.parse(f, debug=False)
 
 if __name__ == "__main__":
     import sys

@@ -1,7 +1,8 @@
 import ply.lex as lex
 
-# TODO peut etre table des symboles
+
 bloc_open = 0
+
 
 tokens = (
     "START_BLOC",
@@ -23,7 +24,6 @@ tokens = (
 )
 
 t_ignore = " \t"
-
 
 def incremente():
     global bloc_open
