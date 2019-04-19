@@ -44,7 +44,9 @@ def p_expression_expression_list(p):
 def p_expression_expression(p):
     """expression : variable assignation string_expression
          | variable assignation string_list
-		 | print string_expression 
+         | variable assignation operation
+		 | print string_expression
+         | print operation 
          | for variable in string_list do expression_list endfor
          | for variable in variable do expression_list endfor"""
     if len(p) == 4:
@@ -78,10 +80,25 @@ def p_expression_string_list_interior(p):
     elif len(p) == 4:
         p[0] = Node("string_list_interior", [p[1], p[2], p[3]])
 
+def p_expression_operation(p):
+    """operation : operation op operation 
+            | integer"""
+    if len(p)== 2:
+        p[0] = Node("operation", [p[1]])
+    elif len(p) == 4:
+        p[0] = Node("operation", [p[1], p[2], p[3]])
+
+def p_expression_op(p):
+    """op : OP"""
+    p[0] = Node("op", value=p[1])
+
+def p_expression_integer(p):
+    """integer : INTEGER"""
+    p[0] = Node("integer", value=p[1])
 
 def p_expression_string(p):
     """string : STRING"""
-    p[0] = Node("string", value=p[1])
+    p[0] = Node("string", value=p[1][1:-1])
 
 
 def p_expression_variable(p):

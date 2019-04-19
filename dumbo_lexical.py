@@ -11,6 +11,8 @@ tokens = (
     "IN",
     "DO",
     "ENDFOR",
+    "INTEGER",
+    "OP",
     "STRING",
     "TEXT",
     "VARIABLE",
@@ -57,6 +59,15 @@ def t_DO(t):
     t.value = str(t.value)
     return t
 
+def t_OP(t):
+    r"\*|/|\+|-"
+    t.value = str(t.value)
+    return t
+
+def t_INTEGER(t):
+    r'\d+'
+    t.value = int(t.value)
+    return t
 
 def t_ENDFOR(t):
     r"endfor"
