@@ -13,6 +13,11 @@ tokens = (
     "ENDFOR",
     "INTEGER",
     "OP",
+    "OP_LOGIQUE",
+    "COMPARATOR",
+    "IF",
+    "ENDIF",
+    "BOOL",
     "STRING",
     "TEXT",
     "VARIABLE",
@@ -25,51 +30,72 @@ tokens = (
     "VIRGULE",
 )
 
-t_ignore = " \t"
+states = (('inBloc', 'inclusive'),)
 
-def incremente():
-    global bloc_open
-    bloc_open += 1
+t_inBloc_ignore = " \t"
 
 
-def decremente():
-    global bloc_open
-    bloc_open -= 1
-
-
-def setType(t):
-    if bloc_open == 0:
-        t.type = "TEXT"
-
-
-def t_FOR(t):
+def t_inBloc_FOR(t):
     r"for"
     t.value = str(t.value)
     return t
 
 
-def t_IN(t):
+def t_inBloc_IN(t):
     r"in"
     t.value = str(t.value)
     return t
 
 
-def t_DO(t):
+def t_inBloc_DO(t):
     r"do"
     t.value = str(t.value)
     return t
 
-def t_OP(t):
+
+def t_inBloc_OP(t):
     r"\*|/|\+|-"
     t.value = str(t.value)
     return t
 
-def t_INTEGER(t):
+
+def t_inBLoc_OP_LOGIQUE(t):
+    r"or|and"
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_COMPARATOR(t):
+    r">|<|=|!="
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_IF(t):
+    r"if"
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_ENDIF(t):
+    r"endif"
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_BOOL(t):
+    r"true|false"
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_INTEGER(t):
     r'\d+'
     t.value = int(t.value)
     return t
 
-def t_ENDFOR(t):
+
+def t_inBloc_ENDFOR(t):
     r"endfor"
     t.value = str(t.value)
     return t
@@ -78,81 +104,79 @@ def t_ENDFOR(t):
 def t_START_BLOC(t):
     r"\{\{"
     t.value = str(t.value)
-    # bloc_open += 1
-    incremente()
+    t.lexer.begin('inBloc')
     return t
 
 
-def t_END_BLOC(t):
+def t_inBloc_END_BLOC(t):
     r"\}\}"
     t.value = str(t.value)
-    # bloc_open -= 1
-    decremente()
+    t.lexer.begin('INITIAL')
     return t
 
 
-def t_PRINT(t):
+def t_inBloc_PRINT(t):
     r"print"
     t.value = str(t.value)
 
     return t
 
 
-def t_POINT(t):
+def t_inBloc_POINT(t):
     r"\."
     t.value = str(t.value)
     return t
 
-def t_VIRGULE(t):
+
+def t_inBloc_VIRGULE(t):
     r","
-    t.value=str(t.value)
+    t.value = str(t.value)
     return t
 
-def t_ASSIGNATION(t):
+
+def t_inBloc_ASSIGNATION(t):
     r":="
     t.value = str(t.value)
     return t
 
 
-def t_END_EXPRESSION(t):
+def t_inBloc_END_EXPRESSION(t):
     r";"
     t.Value = str(t.value)
     return t
 
 
-def t_LPARENT(t):
+def t_inBloc_LPARENT(t):
     r"\("
     t.value = str(t.value)
     return t
 
 
-def t_RPARENT(t):
+def t_inBloc_RPARENT(t):
     r"\)"
     t.Value = str(t.value)
     return t
 
 
-def t_STRING(t):
-    r"\'(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\ )+\'"
+def t_inBloc_STRING(t):
+    r"\'(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\ |=|\n|\t)+\'"
     t.value = str(t.value)
     return t
 
 
-def t_VARIABLE(t):
+def t_inBloc_VARIABLE(t):
     r"(\w|_)+"
     t.value = str(t.value)
-    setType(t)
-
     return t
 
 
 def t_TEXT(t):
-    r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,)+"
+    r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\t|\ |\n)+"
     t.value = str(t.value)
     return t
 
 
-def t_newline(t):
+def t_inBloc_newline(t):
     r"\n+"
     t.lexer.lineno += len(t.value)
 
