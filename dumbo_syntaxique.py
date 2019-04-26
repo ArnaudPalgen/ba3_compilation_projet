@@ -4,15 +4,18 @@ from dumbo_lexical import tokens
 
 
 class Node:
-    def __init__(self, p_type, children=[], value=None):
+    def __init__(self, p_type, children=[], value=None, function = lambda node: node.value):
         self.p_type = p_type
         self.children = children
-        self.value=value
+        self.value = value
+        self.function = function
 
     def is_leaf(self):
         return len(self.children) == 0
     def __str__(self):
         return self.p_type
+    def eval(self):
+        return self.function(self)
 
 def p_expression_programme(p):
     """programme : text
@@ -28,8 +31,6 @@ def p_expression_programme(p):
 def p_expression_dumboBloc(p):
     """dumboBloc : start_bloc expression_list end_bloc"""
     p[0] = Node("dumbo_bloc", [p[1], p[2], p[3]])
-    # p[0]=p[2]
-    # meme chose que pour p_parent tp3
 
 
 def p_expression_expression_list(p):
@@ -44,23 +45,26 @@ def p_expression_expression_list(p):
 def p_expression_expression(p):
     """expression : variable assignation string_expression
          | variable assignation string_list
-         | variable assignation operation
+         | variable assignation integer_expression
+         | variable assignation boolean
+         | if boolean_expression do expression_list endif
 		 | print string_expression
-         | print operation 
          | for variable in string_list do expression_list endfor
          | for variable in variable do expression_list endfor"""
     if len(p) == 4:
         p[0] = Node("expression", [p[1], p[2], p[3]])
     elif len(p) == 3:
         p[0] = Node("expression", [p[1], p[2]])
+    elif len(p) == 6:
+        p[0] = Node("expression", [p[1], p[2], p[3], p[4], p[5]])
     elif len(p) == 8:
         p[0] = Node("expression", [p[1], p[2], p[3], p[4], p[5], p[6], p[7]])
 
 
 def p_expression_string_expression(p):
     """string_expression : string
-	         | variable
-                 | string_expression point string_expression"""
+	    | variable
+        | string_expression point string_expression"""
     if len(p) == 2:
         p[0] = Node("string_expression", [p[1]])
     elif len(p) == 4:
@@ -69,24 +73,34 @@ def p_expression_string_expression(p):
 
 def p_expression_string_list(p):
     """string_list : lparent string_list_interior rparent"""
-    p[0] = Node("expression_string_list", [p[1], p[2], p[3]])
+    p[0] = Node("string_list", [p[1], p[2], p[3]])
 
 
 def p_expression_string_list_interior(p):
     """string_list_interior : string 
-                 | string virgule string_list_interior"""
+        | string virgule string_list_interior"""
     if len(p) == 2:
         p[0] = Node("string_list_interior", [p[1]])
     elif len(p) == 4:
         p[0] = Node("string_list_interior", [p[1], p[2], p[3]])
 
-def p_expression_operation(p):
-    """operation : operation op operation 
-            | integer"""
-    if len(p)== 2:
-        p[0] = Node("operation", [p[1]])
-    elif len(p) == 4:
-        p[0] = Node("operation", [p[1], p[2], p[3]])
+def p_expression_integer_expression(p):
+    """integer_expression : integer_expression op integer_expression
+        | variable
+        | integer"""
+    if len(p) == 4:
+        p[0] = Node("integer_expression", [p[1], p[2], p[3]])
+    elif len(p) == 2:
+        p[0] = Node("integer_expression", [p[1]])
+
+def p_expression_boolean_expression(p):
+    """boolean_expression : boolean_expression comparator boolean_expression
+        | boolean_expression op_logic boolean_expression
+        | integer"""
+    if len(p) == 4:
+        p[0] = Node("boolean_expression", [p[1], p[2], p[3]])
+    elif len(p) == 2:
+        p[0] = Node("boolean_expression", [p[1]])
 
 def p_expression_op(p):
     """op : OP"""
@@ -96,9 +110,25 @@ def p_expression_integer(p):
     """integer : INTEGER"""
     p[0] = Node("integer", value=p[1])
 
+def p_expression_boolean(p):
+    """boolean : BOOL"""
+    p[0] = Node("bool", value = p[1])
+
 def p_expression_string(p):
     """string : STRING"""
     p[0] = Node("string", value=p[1][1:-1])
+
+def p_expression_comparator(p):
+    """comparator : COMPARATOR"""
+    p[0] = Node("comparator", value = p[1])
+
+def p_expression_if(p):
+    """if : IF"""
+    p[0] = Node("if", value = p[1])
+
+def p_expression_endif(p):
+    """endif : ENDIF"""
+    p[0] = Node("endif", value = p[1])
 
 
 def p_expression_variable(p):
@@ -120,6 +150,9 @@ def p_expression_start_bloc(p):
     """start_bloc : START_BLOC"""
     p[0] = Node("\{\{")
 
+def p_expression_op_logic(p):
+    """op_logic : OP_LOGIQUE"""
+    p[0] = Node("op_logic", value = p[1])
 
 def p_expression_end_bloc(p):
     """end_bloc : END_BLOC"""

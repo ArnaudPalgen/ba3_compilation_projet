@@ -3,6 +3,8 @@ import ply.lex as lex
 
 bloc_open = 0
 
+variables = {}  # value: (type, valeur)
+
 
 tokens = (
     "START_BLOC",
@@ -85,7 +87,7 @@ def t_inBloc_ENDIF(t):
 
 def t_inBloc_BOOL(t):
     r"true|false"
-    t.value = str(t.value)
+    t.value = (str(t.value) == 'true')
     return t
 
 
@@ -167,16 +169,17 @@ def t_inBloc_STRING(t):
 def t_inBloc_VARIABLE(t):
     r"(\w|_)+"
     t.value = str(t.value)
+    variables[t.value] = (None, None)
     return t
 
 
 def t_TEXT(t):
-    r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\t|\ |\n)+"
+    r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\t|\ )+"
     t.value = str(t.value)
     return t
 
 
-def t_inBloc_newline(t):
+def t_newline(t):
     r"\n+"
     t.lexer.lineno += len(t.value)
 

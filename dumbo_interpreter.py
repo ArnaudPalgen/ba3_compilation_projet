@@ -80,11 +80,18 @@ def analyse_template(tree, variables, treeType="", info=None, result=""):
             return treeType, variables, info, result
 
 
+def printTree(node):
+    if node is not None:
+        print(node, ": ", node.value)
+        for child in node.children:
+            printTree(child)
+
+
 if __name__ == "__main__":
     data = "exemples/data_t1.dumbo"
     template = "exemples/template1.dumbo"
     output = "out.html"
-
+    """
     data_tree = syn.analyse(data)
     print(analyseData(data_tree)[2])
     print("toto")
@@ -93,3 +100,10 @@ if __name__ == "__main__":
     print(result)
     with open(output, 'w') as file:
         file.write(result)
+    """
+    import dumbo_semantique as sem
+    from dumbo_lexical import variables as var
+    tree = syn.analyse(template)
+    semantique = sem.buildTree(tree)
+    printTree(semantique)
+    print(var)
