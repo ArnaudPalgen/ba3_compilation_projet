@@ -9,12 +9,23 @@ def evalProgram(node):
     return l
 
 
+def provisoire(node):
+    # print("---v")
+    # print(node)
+    t1 = node.children[0].eval()
+    t2 = node.children[1].eval()
+    """print(t1)
+    print(t2)
+    print("---^")"""
+    return[t1]+t2
+
+
 def evalAssign(node):
     # print("here")
-    # print(variables)
-    variables[node.children[0].eval()] = (None, node.children[1].eval())
-    # print(variables)
-    # print("---")
+    print(variables)
+    variables[node.children[0].eval()][1] = node.children[1].eval()
+    print(variables)
+    print("---")
     return ""
 
 
@@ -39,13 +50,13 @@ def evalFor(node):
         var_value = variables[var_name][1]
 
     for item in list_value:
-        variables[var_name] = (None, item)
+        variables[var_name][1] = item
         l += node.children[2].eval()
 
     if var_value is None:
         variables.pop(var_name)
     else:
-        variables[var_name] = (None, var_value)
+        variables[var_name][1] = var_value
 
     return l
 
@@ -116,7 +127,7 @@ def buildTree(tree):
         elif len(tree.children) == 3:  # c'est une assignation
             key = buildTree(tree.children[0])
             value = buildTree(tree.children[2])
-            variables[key.value] = (value.p_type, None)
+            variables[key.value] = [value.p_type, None]
             return Node("assignation", [key, value], function=evalAssign)
         elif len(tree.children) == 5:  # c'est un if
             return Node("if", [buildTree(tree.children[1]), buildTree(tree.children[3])], function=lambda node: (node.children[3].eval() if node.children[1].eval() else ""))
@@ -131,11 +142,11 @@ def buildTree(tree):
                 return None
 
     elif tree.p_type == "string_list":  # expression -> string_list
-        print("in string list:", tree)
+        #print("in string list:", tree)
         return buildTree(tree.children[1])
 
     elif tree.p_type == "string_expression":
-        print("string expression:", tree)
+        #print("string expression:", tree)
         if len(tree.children) == 1:
             return buildTree(tree.children[0])
         elif len(tree.children) == 3:
@@ -148,17 +159,17 @@ def buildTree(tree):
             return Node(tree.children[1], [buildTree(tree.children[0]), buildTree(tree.children[2])], function=eval_integer_expression)
 
     elif tree.p_type == "string_list_interior":
-        print("string list interior:", tree)
+        #print("string list interior:", tree)
         if len(tree.children) == 1:  # un string
-            r = buildTree(tree.children[0])
-            print("r: ", r)
+            r = Node("string_list", [buildTree(
+                tree.children[0])], function=lambda node: [node.children[0].eval()])
             return r
         elif len(tree.children) == 3:  # liste de string
             c1 = buildTree(tree.children[0])
             c2 = buildTree(tree.children[2])
-            print("c1:", c1)
-            print("c2:", c2)
-            return Node("string_list_interior", [c1, c2], function=lambda node: [node.children[0].eval()].extend(node.children[1].eval()))
+
+            r2 = Node("string_list", children=[c1, c2], function=provisoire)
+            return r2
 
     elif tree.p_type == "boolean_expression":
         if len(tree.children) == 1:
@@ -175,8 +186,9 @@ def buildTree(tree):
         return Node("boolean", value=tree.value)
 
     elif tree.p_type == "string":
-        print("string:", tree)
-        return Node("string", value=tree.value)
+        #print("stringSe:", tree, tree.value)
+        r3 = Node("string", value=tree.value)
+        return r3
 
     elif tree.p_type == "integer":
         return Node("integer", value=tree.value)

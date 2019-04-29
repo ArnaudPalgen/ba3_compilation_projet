@@ -174,7 +174,7 @@ def t_inBloc_STRING(t):
 def t_inBloc_VARIABLE(t):
     r"(\w|_)+"
     t.value = str(t.value)
-    variables[t.value] = (None, None)
+    variables[t.value] = [None, None]
     return t
 
 

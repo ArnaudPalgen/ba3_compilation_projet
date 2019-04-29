@@ -17,7 +17,19 @@ class Node:
         return self.p_type + ", "+str(self.value)
 
     def eval(self):
-        return self.function(self)
+        """if len(self.children) == 0:
+            print("eval node type: ", self.p_type, "with value:",
+                  self.value, "with NO child")
+        if len(self.children) == 1:
+            print("eval node type: ", self.p_type, "with value:",
+                  self.value, "witch child0", self.children[0])
+
+        if len(self.children) == 2:
+            print("eval node type: ", self.p_type, "with value:", self.value,
+                  "witch child0", self.children[0], "witch child1", self.children[1])"""
+        r = self.function(self)
+        #print(str(self.p_type)+" and retour is:"+str(r))
+        return r
 
 
 def p_expression_programme(p):
