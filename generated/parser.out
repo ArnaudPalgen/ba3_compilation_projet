@@ -1,0 +1,1400 @@
+Created by PLY version 3.11 (http://www.dabeaz.com/ply)
+
+Grammar
+
+Rule 0     S' -> programme
+Rule 1     programme -> text
+Rule 2     programme -> text programme
+Rule 3     programme -> dumboBloc
+Rule 4     programme -> dumboBloc programme
+Rule 5     dumboBloc -> start_bloc expression_list end_bloc
+Rule 6     expression_list -> expression end_expression
+Rule 7     expression_list -> expression end_expression expression_list
+Rule 8     expression -> variable assignation string_expression
+Rule 9     expression -> variable assignation string_list
+Rule 10    expression -> variable assignation integer_expression
+Rule 11    expression -> variable assignation variable
+Rule 12    expression -> variable assignation boolean
+Rule 13    expression -> if boolean_expression do expression_list endif
+Rule 14    expression -> print string_expression
+Rule 15    expression -> print variable
+Rule 16    expression -> for variable in string_list do expression_list endfor
+Rule 17    expression -> for variable in variable do expression_list endfor
+Rule 18    string_expression -> string
+Rule 19    string_expression -> string_expression POINT variable
+Rule 20    string_expression -> variable POINT string_expression
+Rule 21    string_expression -> variable POINT variable
+Rule 22    string_expression -> string_expression POINT string_expression
+Rule 23    string_list -> lparent string_list_interior rparent
+Rule 24    string_list_interior -> string
+Rule 25    string_list_interior -> string virgule string_list_interior
+Rule 26    integer_expression -> integer_expression ADD_OP integer_expression
+Rule 27    integer_expression -> integer_expression MUL_OP integer_expression
+Rule 28    integer_expression -> variable MUL_OP integer_expression
+Rule 29    integer_expression -> integer_expression MUL_OP variable
+Rule 30    integer_expression -> variable MUL_OP variable
+Rule 31    integer_expression -> variable ADD_OP integer_expression
+Rule 32    integer_expression -> integer_expression ADD_OP variable
+Rule 33    integer_expression -> variable ADD_OP variable
+Rule 34    integer_expression -> integer
+Rule 35    comparator_expression -> integer_expression COMPARATOR integer_expression
+Rule 36    boolean_expression -> boolean_expression OP_LOGIQUE boolean_expression
+Rule 37    boolean_expression -> comparator_expression
+Rule 38    boolean_expression -> boolean
+Rule 39    integer -> INTEGER
+Rule 40    boolean -> BOOL
+Rule 41    string -> STRING
+Rule 42    if -> IF
+Rule 43    endif -> ENDIF
+Rule 44    variable -> VARIABLE
+Rule 45    text -> TEXT
+Rule 46    print -> PRINT
+Rule 47    start_bloc -> START_BLOC
+Rule 48    end_bloc -> END_BLOC
+Rule 49    end_expression -> END_EXPRESSION
+Rule 50    assignation -> ASSIGNATION
+Rule 51    for -> FOR
+Rule 52    in -> IN
+Rule 53    do -> DO
+Rule 54    endfor -> ENDFOR
+Rule 55    lparent -> LPARENT
+Rule 56    rparent -> RPARENT
+Rule 57    virgule -> VIRGULE
+
+Terminals, with rules where they appear
+
+ADD_OP               : 26 31 32 33
+ASSIGNATION          : 50
+BOOL                 : 40
+COMPARATOR           : 35
+DO                   : 53
+ENDFOR               : 54
+ENDIF                : 43
+END_BLOC             : 48
+END_EXPRESSION       : 49
+FOR                  : 51
+IF                   : 42
+IN                   : 52
+INTEGER              : 39
+LPARENT              : 55
+MUL_OP               : 27 28 29 30
+OP_LOGIQUE           : 36
+POINT                : 19 20 21 22
+PRINT                : 46
+RPARENT              : 56
+START_BLOC           : 47
+STRING               : 41
+TEXT                 : 45
+VARIABLE             : 44
+VIRGULE              : 57
+error                : 
+
+Nonterminals, with rules where they appear
+
+assignation          : 8 9 10 11 12
+boolean              : 12 38
+boolean_expression   : 13 36 36
+comparator_expression : 37
+do                   : 13 16 17
+dumboBloc            : 3 4
+end_bloc             : 5
+end_expression       : 6 7
+endfor               : 16 17
+endif                : 13
+expression           : 6 7
+expression_list      : 5 7 13 16 17
+for                  : 16 17
+if                   : 13
+in                   : 16 17
+integer              : 34
+integer_expression   : 10 26 26 27 27 28 29 31 32 35 35
+lparent              : 23
+print                : 14 15
+programme            : 2 4 0
+rparent              : 23
+start_bloc           : 5
+string               : 18 24 25
+string_expression    : 8 14 19 20 22 22
+string_list          : 9 16
+string_list_interior : 23 25
+text                 : 1 2
+variable             : 8 9 10 11 11 12 15 16 17 17 19 20 21 21 28 29 30 30 31 32 33 33
+virgule              : 25
+
+Parsing method: LALR
+
+state 0
+
+    (0) S' -> . programme
+    (1) programme -> . text
+    (2) programme -> . text programme
+    (3) programme -> . dumboBloc
+    (4) programme -> . dumboBloc programme
+    (45) text -> . TEXT
+    (5) dumboBloc -> . start_bloc expression_list end_bloc
+    (47) start_bloc -> . START_BLOC
+
+    TEXT            shift and go to state 4
+    START_BLOC      shift and go to state 6
+
+    programme                      shift and go to state 1
+    text                           shift and go to state 2
+    dumboBloc                      shift and go to state 3
+    start_bloc                     shift and go to state 5
+
+state 1
+
+    (0) S' -> programme .
+
+
+
+state 2
+
+    (1) programme -> text .
+    (2) programme -> text . programme
+    (1) programme -> . text
+    (2) programme -> . text programme
+    (3) programme -> . dumboBloc
+    (4) programme -> . dumboBloc programme
+    (45) text -> . TEXT
+    (5) dumboBloc -> . start_bloc expression_list end_bloc
+    (47) start_bloc -> . START_BLOC
+
+    $end            reduce using rule 1 (programme -> text .)
+    TEXT            shift and go to state 4
+    START_BLOC      shift and go to state 6
+
+    text                           shift and go to state 2
+    programme                      shift and go to state 7
+    dumboBloc                      shift and go to state 3
+    start_bloc                     shift and go to state 5
+
+state 3
+
+    (3) programme -> dumboBloc .
+    (4) programme -> dumboBloc . programme
+    (1) programme -> . text
+    (2) programme -> . text programme
+    (3) programme -> . dumboBloc
+    (4) programme -> . dumboBloc programme
+    (45) text -> . TEXT
+    (5) dumboBloc -> . start_bloc expression_list end_bloc
+    (47) start_bloc -> . START_BLOC
+
+    $end            reduce using rule 3 (programme -> dumboBloc .)
+    TEXT            shift and go to state 4
+    START_BLOC      shift and go to state 6
+
+    dumboBloc                      shift and go to state 3
+    programme                      shift and go to state 8
+    text                           shift and go to state 2
+    start_bloc                     shift and go to state 5
+
+state 4
+
+    (45) text -> TEXT .
+
+    TEXT            reduce using rule 45 (text -> TEXT .)
+    START_BLOC      reduce using rule 45 (text -> TEXT .)
+    $end            reduce using rule 45 (text -> TEXT .)
+
+
+state 5
+
+    (5) dumboBloc -> start_bloc . expression_list end_bloc
+    (6) expression_list -> . expression end_expression
+    (7) expression_list -> . expression end_expression expression_list
+    (8) expression -> . variable assignation string_expression
+    (9) expression -> . variable assignation string_list
+    (10) expression -> . variable assignation integer_expression
+    (11) expression -> . variable assignation variable
+    (12) expression -> . variable assignation boolean
+    (13) expression -> . if boolean_expression do expression_list endif
+    (14) expression -> . print string_expression
+    (15) expression -> . print variable
+    (16) expression -> . for variable in string_list do expression_list endfor
+    (17) expression -> . for variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+    (42) if -> . IF
+    (46) print -> . PRINT
+    (51) for -> . FOR
+
+    VARIABLE        shift and go to state 15
+    IF              shift and go to state 16
+    PRINT           shift and go to state 17
+    FOR             shift and go to state 18
+
+    expression_list                shift and go to state 9
+    expression                     shift and go to state 10
+    variable                       shift and go to state 11
+    if                             shift and go to state 12
+    print                          shift and go to state 13
+    for                            shift and go to state 14
+
+state 6
+
+    (47) start_bloc -> START_BLOC .
+
+    VARIABLE        reduce using rule 47 (start_bloc -> START_BLOC .)
+    IF              reduce using rule 47 (start_bloc -> START_BLOC .)
+    PRINT           reduce using rule 47 (start_bloc -> START_BLOC .)
+    FOR             reduce using rule 47 (start_bloc -> START_BLOC .)
+
+
+state 7
+
+    (2) programme -> text programme .
+
+    $end            reduce using rule 2 (programme -> text programme .)
+
+
+state 8
+
+    (4) programme -> dumboBloc programme .
+
+    $end            reduce using rule 4 (programme -> dumboBloc programme .)
+
+
+state 9
+
+    (5) dumboBloc -> start_bloc expression_list . end_bloc
+    (48) end_bloc -> . END_BLOC
+
+    END_BLOC        shift and go to state 20
+
+    end_bloc                       shift and go to state 19
+
+state 10
+
+    (6) expression_list -> expression . end_expression
+    (7) expression_list -> expression . end_expression expression_list
+    (49) end_expression -> . END_EXPRESSION
+
+    END_EXPRESSION  shift and go to state 22
+
+    end_expression                 shift and go to state 21
+
+state 11
+
+    (8) expression -> variable . assignation string_expression
+    (9) expression -> variable . assignation string_list
+    (10) expression -> variable . assignation integer_expression
+    (11) expression -> variable . assignation variable
+    (12) expression -> variable . assignation boolean
+    (50) assignation -> . ASSIGNATION
+
+    ASSIGNATION     shift and go to state 24
+
+    assignation                    shift and go to state 23
+
+state 12
+
+    (13) expression -> if . boolean_expression do expression_list endif
+    (36) boolean_expression -> . boolean_expression OP_LOGIQUE boolean_expression
+    (37) boolean_expression -> . comparator_expression
+    (38) boolean_expression -> . boolean
+    (35) comparator_expression -> . integer_expression COMPARATOR integer_expression
+    (40) boolean -> . BOOL
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    BOOL            shift and go to state 29
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    boolean_expression             shift and go to state 25
+    comparator_expression          shift and go to state 26
+    boolean                        shift and go to state 27
+    integer_expression             shift and go to state 28
+    variable                       shift and go to state 30
+    integer                        shift and go to state 31
+
+state 13
+
+    (14) expression -> print . string_expression
+    (15) expression -> print . variable
+    (18) string_expression -> . string
+    (19) string_expression -> . string_expression POINT variable
+    (20) string_expression -> . variable POINT string_expression
+    (21) string_expression -> . variable POINT variable
+    (22) string_expression -> . string_expression POINT string_expression
+    (44) variable -> . VARIABLE
+    (41) string -> . STRING
+
+    VARIABLE        shift and go to state 15
+    STRING          shift and go to state 36
+
+    string_expression              shift and go to state 33
+    variable                       shift and go to state 34
+    string                         shift and go to state 35
+
+state 14
+
+    (16) expression -> for . variable in string_list do expression_list endfor
+    (17) expression -> for . variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+
+    VARIABLE        shift and go to state 15
+
+    variable                       shift and go to state 37
+
+state 15
+
+    (44) variable -> VARIABLE .
+
+    ASSIGNATION     reduce using rule 44 (variable -> VARIABLE .)
+    MUL_OP          reduce using rule 44 (variable -> VARIABLE .)
+    ADD_OP          reduce using rule 44 (variable -> VARIABLE .)
+    POINT           reduce using rule 44 (variable -> VARIABLE .)
+    END_EXPRESSION  reduce using rule 44 (variable -> VARIABLE .)
+    IN              reduce using rule 44 (variable -> VARIABLE .)
+    COMPARATOR      reduce using rule 44 (variable -> VARIABLE .)
+    OP_LOGIQUE      reduce using rule 44 (variable -> VARIABLE .)
+    DO              reduce using rule 44 (variable -> VARIABLE .)
+
+
+state 16
+
+    (42) if -> IF .
+
+    BOOL            reduce using rule 42 (if -> IF .)
+    VARIABLE        reduce using rule 42 (if -> IF .)
+    INTEGER         reduce using rule 42 (if -> IF .)
+
+
+state 17
+
+    (46) print -> PRINT .
+
+    VARIABLE        reduce using rule 46 (print -> PRINT .)
+    STRING          reduce using rule 46 (print -> PRINT .)
+
+
+state 18
+
+    (51) for -> FOR .
+
+    VARIABLE        reduce using rule 51 (for -> FOR .)
+
+
+state 19
+
+    (5) dumboBloc -> start_bloc expression_list end_bloc .
+
+    TEXT            reduce using rule 5 (dumboBloc -> start_bloc expression_list end_bloc .)
+    START_BLOC      reduce using rule 5 (dumboBloc -> start_bloc expression_list end_bloc .)
+    $end            reduce using rule 5 (dumboBloc -> start_bloc expression_list end_bloc .)
+
+
+state 20
+
+    (48) end_bloc -> END_BLOC .
+
+    TEXT            reduce using rule 48 (end_bloc -> END_BLOC .)
+    START_BLOC      reduce using rule 48 (end_bloc -> END_BLOC .)
+    $end            reduce using rule 48 (end_bloc -> END_BLOC .)
+
+
+state 21
+
+    (6) expression_list -> expression end_expression .
+    (7) expression_list -> expression end_expression . expression_list
+    (6) expression_list -> . expression end_expression
+    (7) expression_list -> . expression end_expression expression_list
+    (8) expression -> . variable assignation string_expression
+    (9) expression -> . variable assignation string_list
+    (10) expression -> . variable assignation integer_expression
+    (11) expression -> . variable assignation variable
+    (12) expression -> . variable assignation boolean
+    (13) expression -> . if boolean_expression do expression_list endif
+    (14) expression -> . print string_expression
+    (15) expression -> . print variable
+    (16) expression -> . for variable in string_list do expression_list endfor
+    (17) expression -> . for variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+    (42) if -> . IF
+    (46) print -> . PRINT
+    (51) for -> . FOR
+
+    END_BLOC        reduce using rule 6 (expression_list -> expression end_expression .)
+    ENDIF           reduce using rule 6 (expression_list -> expression end_expression .)
+    ENDFOR          reduce using rule 6 (expression_list -> expression end_expression .)
+    VARIABLE        shift and go to state 15
+    IF              shift and go to state 16
+    PRINT           shift and go to state 17
+    FOR             shift and go to state 18
+
+    expression                     shift and go to state 10
+    expression_list                shift and go to state 38
+    variable                       shift and go to state 11
+    if                             shift and go to state 12
+    print                          shift and go to state 13
+    for                            shift and go to state 14
+
+state 22
+
+    (49) end_expression -> END_EXPRESSION .
+
+    VARIABLE        reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    IF              reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    PRINT           reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    FOR             reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    END_BLOC        reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    ENDIF           reduce using rule 49 (end_expression -> END_EXPRESSION .)
+    ENDFOR          reduce using rule 49 (end_expression -> END_EXPRESSION .)
+
+
+state 23
+
+    (8) expression -> variable assignation . string_expression
+    (9) expression -> variable assignation . string_list
+    (10) expression -> variable assignation . integer_expression
+    (11) expression -> variable assignation . variable
+    (12) expression -> variable assignation . boolean
+    (18) string_expression -> . string
+    (19) string_expression -> . string_expression POINT variable
+    (20) string_expression -> . variable POINT string_expression
+    (21) string_expression -> . variable POINT variable
+    (22) string_expression -> . string_expression POINT string_expression
+    (23) string_list -> . lparent string_list_interior rparent
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (40) boolean -> . BOOL
+    (41) string -> . STRING
+    (55) lparent -> . LPARENT
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    BOOL            shift and go to state 29
+    STRING          shift and go to state 36
+    LPARENT         shift and go to state 45
+    INTEGER         shift and go to state 32
+
+    variable                       shift and go to state 39
+    string_expression              shift and go to state 40
+    string_list                    shift and go to state 41
+    integer_expression             shift and go to state 42
+    boolean                        shift and go to state 43
+    string                         shift and go to state 35
+    lparent                        shift and go to state 44
+    integer                        shift and go to state 31
+
+state 24
+
+    (50) assignation -> ASSIGNATION .
+
+    VARIABLE        reduce using rule 50 (assignation -> ASSIGNATION .)
+    BOOL            reduce using rule 50 (assignation -> ASSIGNATION .)
+    STRING          reduce using rule 50 (assignation -> ASSIGNATION .)
+    LPARENT         reduce using rule 50 (assignation -> ASSIGNATION .)
+    INTEGER         reduce using rule 50 (assignation -> ASSIGNATION .)
+
+
+state 25
+
+    (13) expression -> if boolean_expression . do expression_list endif
+    (36) boolean_expression -> boolean_expression . OP_LOGIQUE boolean_expression
+    (53) do -> . DO
+
+    OP_LOGIQUE      shift and go to state 47
+    DO              shift and go to state 48
+
+    do                             shift and go to state 46
+
+state 26
+
+    (37) boolean_expression -> comparator_expression .
+
+    OP_LOGIQUE      reduce using rule 37 (boolean_expression -> comparator_expression .)
+    DO              reduce using rule 37 (boolean_expression -> comparator_expression .)
+
+
+state 27
+
+    (38) boolean_expression -> boolean .
+
+    OP_LOGIQUE      reduce using rule 38 (boolean_expression -> boolean .)
+    DO              reduce using rule 38 (boolean_expression -> boolean .)
+
+
+state 28
+
+    (35) comparator_expression -> integer_expression . COMPARATOR integer_expression
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    COMPARATOR      shift and go to state 49
+    ADD_OP          shift and go to state 50
+    MUL_OP          shift and go to state 51
+
+
+state 29
+
+    (40) boolean -> BOOL .
+
+    OP_LOGIQUE      reduce using rule 40 (boolean -> BOOL .)
+    DO              reduce using rule 40 (boolean -> BOOL .)
+    END_EXPRESSION  reduce using rule 40 (boolean -> BOOL .)
+
+
+state 30
+
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    MUL_OP          shift and go to state 52
+    ADD_OP          shift and go to state 53
+
+
+state 31
+
+    (34) integer_expression -> integer .
+
+    COMPARATOR      reduce using rule 34 (integer_expression -> integer .)
+    ADD_OP          reduce using rule 34 (integer_expression -> integer .)
+    MUL_OP          reduce using rule 34 (integer_expression -> integer .)
+    END_EXPRESSION  reduce using rule 34 (integer_expression -> integer .)
+    OP_LOGIQUE      reduce using rule 34 (integer_expression -> integer .)
+    DO              reduce using rule 34 (integer_expression -> integer .)
+
+
+state 32
+
+    (39) integer -> INTEGER .
+
+    COMPARATOR      reduce using rule 39 (integer -> INTEGER .)
+    ADD_OP          reduce using rule 39 (integer -> INTEGER .)
+    MUL_OP          reduce using rule 39 (integer -> INTEGER .)
+    END_EXPRESSION  reduce using rule 39 (integer -> INTEGER .)
+    OP_LOGIQUE      reduce using rule 39 (integer -> INTEGER .)
+    DO              reduce using rule 39 (integer -> INTEGER .)
+
+
+state 33
+
+    (14) expression -> print string_expression .
+    (19) string_expression -> string_expression . POINT variable
+    (22) string_expression -> string_expression . POINT string_expression
+
+    END_EXPRESSION  reduce using rule 14 (expression -> print string_expression .)
+    POINT           shift and go to state 54
+
+
+state 34
+
+    (15) expression -> print variable .
+    (20) string_expression -> variable . POINT string_expression
+    (21) string_expression -> variable . POINT variable
+
+    END_EXPRESSION  reduce using rule 15 (expression -> print variable .)
+    POINT           shift and go to state 55
+
+
+state 35
+
+    (18) string_expression -> string .
+
+    POINT           reduce using rule 18 (string_expression -> string .)
+    END_EXPRESSION  reduce using rule 18 (string_expression -> string .)
+
+
+state 36
+
+    (41) string -> STRING .
+
+    POINT           reduce using rule 41 (string -> STRING .)
+    END_EXPRESSION  reduce using rule 41 (string -> STRING .)
+    VIRGULE         reduce using rule 41 (string -> STRING .)
+    RPARENT         reduce using rule 41 (string -> STRING .)
+
+
+state 37
+
+    (16) expression -> for variable . in string_list do expression_list endfor
+    (17) expression -> for variable . in variable do expression_list endfor
+    (52) in -> . IN
+
+    IN              shift and go to state 57
+
+    in                             shift and go to state 56
+
+state 38
+
+    (7) expression_list -> expression end_expression expression_list .
+
+    END_BLOC        reduce using rule 7 (expression_list -> expression end_expression expression_list .)
+    ENDIF           reduce using rule 7 (expression_list -> expression end_expression expression_list .)
+    ENDFOR          reduce using rule 7 (expression_list -> expression end_expression expression_list .)
+
+
+state 39
+
+    (11) expression -> variable assignation variable .
+    (20) string_expression -> variable . POINT string_expression
+    (21) string_expression -> variable . POINT variable
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    END_EXPRESSION  reduce using rule 11 (expression -> variable assignation variable .)
+    POINT           shift and go to state 55
+    MUL_OP          shift and go to state 52
+    ADD_OP          shift and go to state 53
+
+
+state 40
+
+    (8) expression -> variable assignation string_expression .
+    (19) string_expression -> string_expression . POINT variable
+    (22) string_expression -> string_expression . POINT string_expression
+
+    END_EXPRESSION  reduce using rule 8 (expression -> variable assignation string_expression .)
+    POINT           shift and go to state 54
+
+
+state 41
+
+    (9) expression -> variable assignation string_list .
+
+    END_EXPRESSION  reduce using rule 9 (expression -> variable assignation string_list .)
+
+
+state 42
+
+    (10) expression -> variable assignation integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    END_EXPRESSION  reduce using rule 10 (expression -> variable assignation integer_expression .)
+    ADD_OP          shift and go to state 50
+    MUL_OP          shift and go to state 51
+
+
+state 43
+
+    (12) expression -> variable assignation boolean .
+
+    END_EXPRESSION  reduce using rule 12 (expression -> variable assignation boolean .)
+
+
+state 44
+
+    (23) string_list -> lparent . string_list_interior rparent
+    (24) string_list_interior -> . string
+    (25) string_list_interior -> . string virgule string_list_interior
+    (41) string -> . STRING
+
+    STRING          shift and go to state 36
+
+    string_list_interior           shift and go to state 58
+    string                         shift and go to state 59
+
+state 45
+
+    (55) lparent -> LPARENT .
+
+    STRING          reduce using rule 55 (lparent -> LPARENT .)
+
+
+state 46
+
+    (13) expression -> if boolean_expression do . expression_list endif
+    (6) expression_list -> . expression end_expression
+    (7) expression_list -> . expression end_expression expression_list
+    (8) expression -> . variable assignation string_expression
+    (9) expression -> . variable assignation string_list
+    (10) expression -> . variable assignation integer_expression
+    (11) expression -> . variable assignation variable
+    (12) expression -> . variable assignation boolean
+    (13) expression -> . if boolean_expression do expression_list endif
+    (14) expression -> . print string_expression
+    (15) expression -> . print variable
+    (16) expression -> . for variable in string_list do expression_list endfor
+    (17) expression -> . for variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+    (42) if -> . IF
+    (46) print -> . PRINT
+    (51) for -> . FOR
+
+    VARIABLE        shift and go to state 15
+    IF              shift and go to state 16
+    PRINT           shift and go to state 17
+    FOR             shift and go to state 18
+
+    if                             shift and go to state 12
+    expression_list                shift and go to state 60
+    expression                     shift and go to state 10
+    variable                       shift and go to state 11
+    print                          shift and go to state 13
+    for                            shift and go to state 14
+
+state 47
+
+    (36) boolean_expression -> boolean_expression OP_LOGIQUE . boolean_expression
+    (36) boolean_expression -> . boolean_expression OP_LOGIQUE boolean_expression
+    (37) boolean_expression -> . comparator_expression
+    (38) boolean_expression -> . boolean
+    (35) comparator_expression -> . integer_expression COMPARATOR integer_expression
+    (40) boolean -> . BOOL
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    BOOL            shift and go to state 29
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    boolean_expression             shift and go to state 61
+    comparator_expression          shift and go to state 26
+    boolean                        shift and go to state 27
+    integer_expression             shift and go to state 28
+    variable                       shift and go to state 30
+    integer                        shift and go to state 31
+
+state 48
+
+    (53) do -> DO .
+
+    VARIABLE        reduce using rule 53 (do -> DO .)
+    IF              reduce using rule 53 (do -> DO .)
+    PRINT           reduce using rule 53 (do -> DO .)
+    FOR             reduce using rule 53 (do -> DO .)
+
+
+state 49
+
+    (35) comparator_expression -> integer_expression COMPARATOR . integer_expression
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    integer_expression             shift and go to state 62
+    variable                       shift and go to state 30
+    integer                        shift and go to state 31
+
+state 50
+
+    (26) integer_expression -> integer_expression ADD_OP . integer_expression
+    (32) integer_expression -> integer_expression ADD_OP . variable
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    integer_expression             shift and go to state 63
+    variable                       shift and go to state 64
+    integer                        shift and go to state 31
+
+state 51
+
+    (27) integer_expression -> integer_expression MUL_OP . integer_expression
+    (29) integer_expression -> integer_expression MUL_OP . variable
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    integer_expression             shift and go to state 65
+    variable                       shift and go to state 66
+    integer                        shift and go to state 31
+
+state 52
+
+    (28) integer_expression -> variable MUL_OP . integer_expression
+    (30) integer_expression -> variable MUL_OP . variable
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    variable                       shift and go to state 67
+    integer_expression             shift and go to state 68
+    integer                        shift and go to state 31
+
+state 53
+
+    (31) integer_expression -> variable ADD_OP . integer_expression
+    (33) integer_expression -> variable ADD_OP . variable
+    (26) integer_expression -> . integer_expression ADD_OP integer_expression
+    (27) integer_expression -> . integer_expression MUL_OP integer_expression
+    (28) integer_expression -> . variable MUL_OP integer_expression
+    (29) integer_expression -> . integer_expression MUL_OP variable
+    (30) integer_expression -> . variable MUL_OP variable
+    (31) integer_expression -> . variable ADD_OP integer_expression
+    (32) integer_expression -> . integer_expression ADD_OP variable
+    (33) integer_expression -> . variable ADD_OP variable
+    (34) integer_expression -> . integer
+    (44) variable -> . VARIABLE
+    (39) integer -> . INTEGER
+
+    VARIABLE        shift and go to state 15
+    INTEGER         shift and go to state 32
+
+    variable                       shift and go to state 69
+    integer_expression             shift and go to state 70
+    integer                        shift and go to state 31
+
+state 54
+
+    (19) string_expression -> string_expression POINT . variable
+    (22) string_expression -> string_expression POINT . string_expression
+    (44) variable -> . VARIABLE
+    (18) string_expression -> . string
+    (19) string_expression -> . string_expression POINT variable
+    (20) string_expression -> . variable POINT string_expression
+    (21) string_expression -> . variable POINT variable
+    (22) string_expression -> . string_expression POINT string_expression
+    (41) string -> . STRING
+
+    VARIABLE        shift and go to state 15
+    STRING          shift and go to state 36
+
+    string_expression              shift and go to state 71
+    variable                       shift and go to state 72
+    string                         shift and go to state 35
+
+state 55
+
+    (20) string_expression -> variable POINT . string_expression
+    (21) string_expression -> variable POINT . variable
+    (18) string_expression -> . string
+    (19) string_expression -> . string_expression POINT variable
+    (20) string_expression -> . variable POINT string_expression
+    (21) string_expression -> . variable POINT variable
+    (22) string_expression -> . string_expression POINT string_expression
+    (44) variable -> . VARIABLE
+    (41) string -> . STRING
+
+    VARIABLE        shift and go to state 15
+    STRING          shift and go to state 36
+
+    variable                       shift and go to state 73
+    string_expression              shift and go to state 74
+    string                         shift and go to state 35
+
+state 56
+
+    (16) expression -> for variable in . string_list do expression_list endfor
+    (17) expression -> for variable in . variable do expression_list endfor
+    (23) string_list -> . lparent string_list_interior rparent
+    (44) variable -> . VARIABLE
+    (55) lparent -> . LPARENT
+
+    VARIABLE        shift and go to state 15
+    LPARENT         shift and go to state 45
+
+    variable                       shift and go to state 75
+    string_list                    shift and go to state 76
+    lparent                        shift and go to state 44
+
+state 57
+
+    (52) in -> IN .
+
+    VARIABLE        reduce using rule 52 (in -> IN .)
+    LPARENT         reduce using rule 52 (in -> IN .)
+
+
+state 58
+
+    (23) string_list -> lparent string_list_interior . rparent
+    (56) rparent -> . RPARENT
+
+    RPARENT         shift and go to state 78
+
+    rparent                        shift and go to state 77
+
+state 59
+
+    (24) string_list_interior -> string .
+    (25) string_list_interior -> string . virgule string_list_interior
+    (57) virgule -> . VIRGULE
+
+    RPARENT         reduce using rule 24 (string_list_interior -> string .)
+    VIRGULE         shift and go to state 80
+
+    virgule                        shift and go to state 79
+
+state 60
+
+    (13) expression -> if boolean_expression do expression_list . endif
+    (43) endif -> . ENDIF
+
+    ENDIF           shift and go to state 82
+
+    endif                          shift and go to state 81
+
+state 61
+
+    (36) boolean_expression -> boolean_expression OP_LOGIQUE boolean_expression .
+    (36) boolean_expression -> boolean_expression . OP_LOGIQUE boolean_expression
+
+    OP_LOGIQUE      reduce using rule 36 (boolean_expression -> boolean_expression OP_LOGIQUE boolean_expression .)
+    DO              reduce using rule 36 (boolean_expression -> boolean_expression OP_LOGIQUE boolean_expression .)
+
+  ! OP_LOGIQUE      [ shift and go to state 47 ]
+
+
+state 62
+
+    (35) comparator_expression -> integer_expression COMPARATOR integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    OP_LOGIQUE      reduce using rule 35 (comparator_expression -> integer_expression COMPARATOR integer_expression .)
+    DO              reduce using rule 35 (comparator_expression -> integer_expression COMPARATOR integer_expression .)
+    ADD_OP          shift and go to state 50
+    MUL_OP          shift and go to state 51
+
+
+state 63
+
+    (26) integer_expression -> integer_expression ADD_OP integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    COMPARATOR      reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .)
+    ADD_OP          reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .)
+    END_EXPRESSION  reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .)
+    OP_LOGIQUE      reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .)
+    DO              reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .)
+    MUL_OP          shift and go to state 51
+
+  ! MUL_OP          [ reduce using rule 26 (integer_expression -> integer_expression ADD_OP integer_expression .) ]
+  ! ADD_OP          [ shift and go to state 50 ]
+
+
+state 64
+
+    (32) integer_expression -> integer_expression ADD_OP variable .
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    COMPARATOR      reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .)
+    ADD_OP          reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .)
+    END_EXPRESSION  reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .)
+    OP_LOGIQUE      reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .)
+    DO              reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .)
+    MUL_OP          shift and go to state 52
+
+  ! MUL_OP          [ reduce using rule 32 (integer_expression -> integer_expression ADD_OP variable .) ]
+  ! ADD_OP          [ shift and go to state 53 ]
+
+
+state 65
+
+    (27) integer_expression -> integer_expression MUL_OP integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    COMPARATOR      reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+    ADD_OP          reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+    MUL_OP          reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+    END_EXPRESSION  reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+    OP_LOGIQUE      reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+    DO              reduce using rule 27 (integer_expression -> integer_expression MUL_OP integer_expression .)
+
+  ! ADD_OP          [ shift and go to state 50 ]
+  ! MUL_OP          [ shift and go to state 51 ]
+
+
+state 66
+
+    (29) integer_expression -> integer_expression MUL_OP variable .
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    COMPARATOR      reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+    ADD_OP          reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+    MUL_OP          reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+    END_EXPRESSION  reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+    OP_LOGIQUE      reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+    DO              reduce using rule 29 (integer_expression -> integer_expression MUL_OP variable .)
+
+  ! MUL_OP          [ shift and go to state 52 ]
+  ! ADD_OP          [ shift and go to state 53 ]
+
+
+state 67
+
+    (30) integer_expression -> variable MUL_OP variable .
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    COMPARATOR      reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+    ADD_OP          reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+    MUL_OP          reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+    END_EXPRESSION  reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+    OP_LOGIQUE      reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+    DO              reduce using rule 30 (integer_expression -> variable MUL_OP variable .)
+
+  ! MUL_OP          [ shift and go to state 52 ]
+  ! ADD_OP          [ shift and go to state 53 ]
+
+
+state 68
+
+    (28) integer_expression -> variable MUL_OP integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    COMPARATOR      reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+    ADD_OP          reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+    MUL_OP          reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+    END_EXPRESSION  reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+    OP_LOGIQUE      reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+    DO              reduce using rule 28 (integer_expression -> variable MUL_OP integer_expression .)
+
+  ! ADD_OP          [ shift and go to state 50 ]
+  ! MUL_OP          [ shift and go to state 51 ]
+
+
+state 69
+
+    (33) integer_expression -> variable ADD_OP variable .
+    (28) integer_expression -> variable . MUL_OP integer_expression
+    (30) integer_expression -> variable . MUL_OP variable
+    (31) integer_expression -> variable . ADD_OP integer_expression
+    (33) integer_expression -> variable . ADD_OP variable
+
+    COMPARATOR      reduce using rule 33 (integer_expression -> variable ADD_OP variable .)
+    ADD_OP          reduce using rule 33 (integer_expression -> variable ADD_OP variable .)
+    END_EXPRESSION  reduce using rule 33 (integer_expression -> variable ADD_OP variable .)
+    OP_LOGIQUE      reduce using rule 33 (integer_expression -> variable ADD_OP variable .)
+    DO              reduce using rule 33 (integer_expression -> variable ADD_OP variable .)
+    MUL_OP          shift and go to state 52
+
+  ! MUL_OP          [ reduce using rule 33 (integer_expression -> variable ADD_OP variable .) ]
+  ! ADD_OP          [ shift and go to state 53 ]
+
+
+state 70
+
+    (31) integer_expression -> variable ADD_OP integer_expression .
+    (26) integer_expression -> integer_expression . ADD_OP integer_expression
+    (27) integer_expression -> integer_expression . MUL_OP integer_expression
+    (29) integer_expression -> integer_expression . MUL_OP variable
+    (32) integer_expression -> integer_expression . ADD_OP variable
+
+    COMPARATOR      reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .)
+    ADD_OP          reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .)
+    END_EXPRESSION  reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .)
+    OP_LOGIQUE      reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .)
+    DO              reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .)
+    MUL_OP          shift and go to state 51
+
+  ! MUL_OP          [ reduce using rule 31 (integer_expression -> variable ADD_OP integer_expression .) ]
+  ! ADD_OP          [ shift and go to state 50 ]
+
+
+state 71
+
+    (22) string_expression -> string_expression POINT string_expression .
+    (19) string_expression -> string_expression . POINT variable
+    (22) string_expression -> string_expression . POINT string_expression
+
+    POINT           reduce using rule 22 (string_expression -> string_expression POINT string_expression .)
+    END_EXPRESSION  reduce using rule 22 (string_expression -> string_expression POINT string_expression .)
+
+  ! POINT           [ shift and go to state 54 ]
+
+
+state 72
+
+    (19) string_expression -> string_expression POINT variable .
+    (20) string_expression -> variable . POINT string_expression
+    (21) string_expression -> variable . POINT variable
+
+    POINT           reduce using rule 19 (string_expression -> string_expression POINT variable .)
+    END_EXPRESSION  reduce using rule 19 (string_expression -> string_expression POINT variable .)
+
+  ! POINT           [ shift and go to state 55 ]
+
+
+state 73
+
+    (21) string_expression -> variable POINT variable .
+    (20) string_expression -> variable . POINT string_expression
+    (21) string_expression -> variable . POINT variable
+
+    POINT           reduce using rule 21 (string_expression -> variable POINT variable .)
+    END_EXPRESSION  reduce using rule 21 (string_expression -> variable POINT variable .)
+
+  ! POINT           [ shift and go to state 55 ]
+
+
+state 74
+
+    (20) string_expression -> variable POINT string_expression .
+    (19) string_expression -> string_expression . POINT variable
+    (22) string_expression -> string_expression . POINT string_expression
+
+    POINT           reduce using rule 20 (string_expression -> variable POINT string_expression .)
+    END_EXPRESSION  reduce using rule 20 (string_expression -> variable POINT string_expression .)
+
+  ! POINT           [ shift and go to state 54 ]
+
+
+state 75
+
+    (17) expression -> for variable in variable . do expression_list endfor
+    (53) do -> . DO
+
+    DO              shift and go to state 48
+
+    do                             shift and go to state 83
+
+state 76
+
+    (16) expression -> for variable in string_list . do expression_list endfor
+    (53) do -> . DO
+
+    DO              shift and go to state 48
+
+    do                             shift and go to state 84
+
+state 77
+
+    (23) string_list -> lparent string_list_interior rparent .
+
+    END_EXPRESSION  reduce using rule 23 (string_list -> lparent string_list_interior rparent .)
+    DO              reduce using rule 23 (string_list -> lparent string_list_interior rparent .)
+
+
+state 78
+
+    (56) rparent -> RPARENT .
+
+    END_EXPRESSION  reduce using rule 56 (rparent -> RPARENT .)
+    DO              reduce using rule 56 (rparent -> RPARENT .)
+
+
+state 79
+
+    (25) string_list_interior -> string virgule . string_list_interior
+    (24) string_list_interior -> . string
+    (25) string_list_interior -> . string virgule string_list_interior
+    (41) string -> . STRING
+
+    STRING          shift and go to state 36
+
+    string                         shift and go to state 59
+    string_list_interior           shift and go to state 85
+
+state 80
+
+    (57) virgule -> VIRGULE .
+
+    STRING          reduce using rule 57 (virgule -> VIRGULE .)
+
+
+state 81
+
+    (13) expression -> if boolean_expression do expression_list endif .
+
+    END_EXPRESSION  reduce using rule 13 (expression -> if boolean_expression do expression_list endif .)
+
+
+state 82
+
+    (43) endif -> ENDIF .
+
+    END_EXPRESSION  reduce using rule 43 (endif -> ENDIF .)
+
+
+state 83
+
+    (17) expression -> for variable in variable do . expression_list endfor
+    (6) expression_list -> . expression end_expression
+    (7) expression_list -> . expression end_expression expression_list
+    (8) expression -> . variable assignation string_expression
+    (9) expression -> . variable assignation string_list
+    (10) expression -> . variable assignation integer_expression
+    (11) expression -> . variable assignation variable
+    (12) expression -> . variable assignation boolean
+    (13) expression -> . if boolean_expression do expression_list endif
+    (14) expression -> . print string_expression
+    (15) expression -> . print variable
+    (16) expression -> . for variable in string_list do expression_list endfor
+    (17) expression -> . for variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+    (42) if -> . IF
+    (46) print -> . PRINT
+    (51) for -> . FOR
+
+    VARIABLE        shift and go to state 15
+    IF              shift and go to state 16
+    PRINT           shift and go to state 17
+    FOR             shift and go to state 18
+
+    for                            shift and go to state 14
+    variable                       shift and go to state 11
+    expression_list                shift and go to state 86
+    expression                     shift and go to state 10
+    if                             shift and go to state 12
+    print                          shift and go to state 13
+
+state 84
+
+    (16) expression -> for variable in string_list do . expression_list endfor
+    (6) expression_list -> . expression end_expression
+    (7) expression_list -> . expression end_expression expression_list
+    (8) expression -> . variable assignation string_expression
+    (9) expression -> . variable assignation string_list
+    (10) expression -> . variable assignation integer_expression
+    (11) expression -> . variable assignation variable
+    (12) expression -> . variable assignation boolean
+    (13) expression -> . if boolean_expression do expression_list endif
+    (14) expression -> . print string_expression
+    (15) expression -> . print variable
+    (16) expression -> . for variable in string_list do expression_list endfor
+    (17) expression -> . for variable in variable do expression_list endfor
+    (44) variable -> . VARIABLE
+    (42) if -> . IF
+    (46) print -> . PRINT
+    (51) for -> . FOR
+
+    VARIABLE        shift and go to state 15
+    IF              shift and go to state 16
+    PRINT           shift and go to state 17
+    FOR             shift and go to state 18
+
+    for                            shift and go to state 14
+    variable                       shift and go to state 11
+    expression_list                shift and go to state 87
+    expression                     shift and go to state 10
+    if                             shift and go to state 12
+    print                          shift and go to state 13
+
+state 85
+
+    (25) string_list_interior -> string virgule string_list_interior .
+
+    RPARENT         reduce using rule 25 (string_list_interior -> string virgule string_list_interior .)
+
+
+state 86
+
+    (17) expression -> for variable in variable do expression_list . endfor
+    (54) endfor -> . ENDFOR
+
+    ENDFOR          shift and go to state 89
+
+    endfor                         shift and go to state 88
+
+state 87
+
+    (16) expression -> for variable in string_list do expression_list . endfor
+    (54) endfor -> . ENDFOR
+
+    ENDFOR          shift and go to state 89
+
+    endfor                         shift and go to state 90
+
+state 88
+
+    (17) expression -> for variable in variable do expression_list endfor .
+
+    END_EXPRESSION  reduce using rule 17 (expression -> for variable in variable do expression_list endfor .)
+
+
+state 89
+
+    (54) endfor -> ENDFOR .
+
+    END_EXPRESSION  reduce using rule 54 (endfor -> ENDFOR .)
+
+
+state 90
+
+    (16) expression -> for variable in string_list do expression_list endfor .
+
+    END_EXPRESSION  reduce using rule 16 (expression -> for variable in string_list do expression_list endfor .)
+

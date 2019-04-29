@@ -87,23 +87,24 @@ def printTree(node):
             printTree(child)
 
 
+variables = {}
+
 if __name__ == "__main__":
     data = "exemples/data_t1.dumbo"
     template = "exemples/template1.dumbo"
     output = "out.html"
-    """
-    data_tree = syn.analyse(data)
-    print(analyseData(data_tree)[2])
-    print("toto")
-    result = analyse_template(syn.analyse(
-        template), analyseData(data_tree)[2])[3]
-    print(result)
-    with open(output, 'w') as file:
-        file.write(result)
-    """
+
     import dumbo_semantique as sem
-    from dumbo_lexical import variables as var
-    tree = syn.analyse(template)
-    semantique = sem.buildTree(tree)
-    printTree(semantique)
-    print(var)
+    syntaxTree_data = syn.analyse(data)
+    semantiqueTree_data = sem.buildTree(syntaxTree_data)
+    semantiqueTree_data.eval()
+    print(variables)
+    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    syntaxTree_template = syn.analyse(template)
+    semantiqueTree_template = sem.buildTree(syntaxTree_template)
+    r = semantiqueTree_template.eval()
+    print(r)
+    #tree = syn.analyse(template)
+    #semantique = sem.buildTree(tree)
+    # printTree(semantique)
+    # print(var)

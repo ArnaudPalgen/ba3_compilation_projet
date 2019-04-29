@@ -1,9 +1,7 @@
 import ply.lex as lex
-
+from dumbo_interpreter import variables
 
 bloc_open = 0
-
-variables = {}  # value: (type, valeur)
 
 
 tokens = (
@@ -14,7 +12,8 @@ tokens = (
     "DO",
     "ENDFOR",
     "INTEGER",
-    "OP",
+    "MUL_OP",
+    "ADD_OP",
     "OP_LOGIQUE",
     "COMPARATOR",
     "IF",
@@ -55,8 +54,14 @@ def t_inBloc_DO(t):
     return t
 
 
-def t_inBloc_OP(t):
-    r"\*|/|\+|-"
+def t_inBloc_MUL_OP(t):
+    r"\*|/"
+    t.value = str(t.value)
+    return t
+
+
+def t_inBloc_ADD_OP(t):
+    r"\+|-"
     t.value = str(t.value)
     return t
 
