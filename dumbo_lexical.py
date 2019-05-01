@@ -1,8 +1,8 @@
 import ply.lex as lex
-from dumbo_interpreter import variables
 
 bloc_open = 0
 
+variables = {}
 
 tokens = (
     "START_BLOC",
@@ -42,6 +42,12 @@ def t_inBloc_FOR(t):
     return t
 
 
+def t_inBloc_OP_LOGIQUE(t):
+    r"or|and"
+    t.value = str(t.value)
+    return t
+
+
 def t_inBloc_IN(t):
     r"in"
     t.value = str(t.value)
@@ -62,12 +68,6 @@ def t_inBloc_MUL_OP(t):
 
 def t_inBloc_ADD_OP(t):
     r"\+|-"
-    t.value = str(t.value)
-    return t
-
-
-def t_inBLoc_OP_LOGIQUE(t):
-    r"or|and"
     t.value = str(t.value)
     return t
 
@@ -179,8 +179,14 @@ def t_inBloc_VARIABLE(t):
 
 
 def t_TEXT(t):
-    r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\t|\ )+"
+    r"((\w|;|&|<|>|\"|_|-|\.|\\|\/|:|,|\t|\ )+(\n)*)+"
+    #r"(\w|;|&|<|>|\"|_|-|\.|\\|\/|\\n|:|,|\t|\ )+"
     t.value = str(t.value)
+
+    count = t.value.count("\n")
+    if count > 0:
+        t.lexer.lineno += count
+
     return t
 
 

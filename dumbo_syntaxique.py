@@ -14,22 +14,13 @@ class Node:
         return len(self.children) == 0
 
     def __str__(self):
-        return self.p_type + ", "+str(self.value)
+        return self.p_type  # + ", "+str(self.value)
 
     def eval(self):
-        """if len(self.children) == 0:
-            print("eval node type: ", self.p_type, "with value:",
-                  self.value, "with NO child")
-        if len(self.children) == 1:
-            print("eval node type: ", self.p_type, "with value:",
-                  self.value, "witch child0", self.children[0])
+        return self.function(self)
 
-        if len(self.children) == 2:
-            print("eval node type: ", self.p_type, "with value:", self.value,
-                  "witch child0", self.children[0], "witch child1", self.children[1])"""
-        r = self.function(self)
-        #print(str(self.p_type)+" and retour is:"+str(r))
-        return r
+
+error = False
 
 
 def p_expression_programme(p):
@@ -44,8 +35,12 @@ def p_expression_programme(p):
 
 
 def p_expression_dumboBloc(p):
-    """dumboBloc : start_bloc expression_list end_bloc"""
-    p[0] = Node("dumbo_bloc", [p[1], p[2], p[3]])
+    """dumboBloc : start_bloc expression_list end_bloc
+        | start_bloc end_bloc"""
+    if len(p) == 4:
+        p[0] = Node("dumbo_bloc", [p[1], p[2], p[3]])
+    elif len(p) == 3:
+        p[0] = Node("dumbo_bloc")
 
 
 def p_expression_expression_list(p):
@@ -115,7 +110,9 @@ def p_expression_integer_expression(p):
         | variable ADD_OP variable
         | integer"""
     if len(p) == 4:
-        p[0] = Node("integer_expression", [p[1], Node("op", p[2]), p[3]])
+        n = Node("op", value=p[2])
+        #print("NNNN", n.children[0].value)
+        p[0] = Node("integer_expression", [p[1], n, p[3]])
     elif len(p) == 2:
         p[0] = Node("integer_expression", [p[1]])
 
@@ -123,7 +120,7 @@ def p_expression_integer_expression(p):
 def p_expression_comparator_expression(p):
     """comparator_expression : integer_expression COMPARATOR integer_expression"""
     p[0] = Node("comparator_expression", [
-                p[1], Node("comparator", p[2]), p[3]])
+                p[1], Node("comparator", value=p[2]), p[3]])
 
 
 def p_expression_boolean_expression(p):
@@ -132,7 +129,7 @@ def p_expression_boolean_expression(p):
         | boolean"""
     if len(p) == 4:
         p[0] = Node("boolean_expression", [
-                    p[1], Node("op_logique", p[2]), p[3]])
+                    p[1], Node("op_logique", value=p[2]), p[3]])
     elif len(p) == 2:
         p[0] = Node("boolean_expression", [p[1]])
 
@@ -240,14 +237,19 @@ def printTree(node):
 
 
 def p_error(p):
-    print("Syntax error in line {}".format(p.lineno))
-    yacc.errok()
+    global error
+    error = True
+    if p is not None:
+        print("Syntax error in line {}".format(p.lineno))
+        parser.errok()
+    else:
+        print('Unexpected end of input')
 
 
 precedence = (("left", "ADD_OP"), ("left", "MUL_OP"),
               ("left", "POINT"), ("left", "OP_LOGIQUE"))
 
-yacc.yacc(outputdir="generated")
+parser = yacc.yacc(outputdir="generated")
 
 
 def analyse(file):

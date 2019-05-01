@@ -1,6 +1,8 @@
-import dumbo_syntaxique as syn
+import copy
+import sys
+import os
 
-
+"""
 def analyseData(tree, assignation_found=False, variable_found=None, variables={}):
     if tree is not None:
         if tree.is_leaf():
@@ -78,35 +80,68 @@ def analyse_template(tree, variables, treeType="", info=None, result=""):
                 if t is not None:
                     treeType, variables, info, result = t
             return treeType, variables, info, result
+"""
 
 
-def printTree(node):
+def _printTree(node):
+    """
+    Affiche un arbre
+    :param node: un noeud (qui est aussi un arbre)
+    """
     if node is not None:
         print(node, ": ", node.value)
         for child in node.children:
-            printTree(child)
+            _printTree(child)
 
 
-variables = {}
+def _getParams():
+    """
+    Recupere les trois fichiers necessaire au programme. Affiche l'aide si -h ou --help est precise comme argument
+    """
+
+    if "-h" in sys.argv or "--help" in sys.argv:
+        print("\nAide pour dumbo_interpreter")
+        print("\nDESCRIPTION:\n   dumbo_interpreter permet de générer un fichier contenant du texte en fonction des données reçues.")
+        print("\nPARAMETRES:\n   -un fichier de données,\n   -un fichier template dans lequel les données seront injetées\n   -un fichier de sortie\n")
+        exit()
+    else:
+        if len(sys.argv) != 4:
+            print("ERROR: Nombre d'arument attendu: 3 nombre donné: " +
+                  str(len(sys.argv)-1))
+            exit()
+        else:
+            if (not os.path.isfile(sys.argv[1])) or (not os.path.isfile(sys.argv[2])):
+                print(
+                    "ERROR: fichier de donnée ou fichier template n'est pas un fichier existant")
+                exit()
+            if(os.path.isfile(sys.argv[3])):
+                r = input(
+                    "WARNING: Le fichier de sortie existe déja et sera écrasé. Voulez-vous continuer ? [O/n] ")
+                if r not in ['O', 'o']:
+                    print("annulé")
+                    exit()
+            return sys.argv[1], sys.argv[2], sys.argv[3]
+
 
 if __name__ == "__main__":
-    data = "exemples/data_t1.dumbo"
-    template = "exemples/template1.dumbo"
-    output = "out.html"
+    data, template, output = _getParams()
 
+    import dumbo_syntaxique as syn
+    import dumbo_lexical as lex
     import dumbo_semantique as sem
-    syntaxTree_data = syn.analyse(data)
-    semantiqueTree_data = sem.buildTree(syntaxTree_data)
-    # printTree(semantiqueTree_data)
-    # print("--")
-    semantiqueTree_data.eval()
-    print(variables)
-    print("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    #syntaxTree_template = syn.analyse(template)
-    #semantiqueTree_template = sem.buildTree(syntaxTree_template)
-    #r = semantiqueTree_template.eval()
-    # print(r)
-    #tree = syn.analyse(template)
-    #semantique = sem.buildTree(tree)
-    # printTree(semantique)
-    # print(var)
+
+    syntaxTree_data = syn.analyse(data)  # analyse syntaxique
+    if not syn.error:
+        semantiqueTree_data = sem.buildTree(
+            syntaxTree_data)  # analyse semantique
+        semantiqueTree_data.eval()  # execution du programme
+    var = copy.deepcopy(lex.variables)
+
+    syntaxTree_template = syn.analyse(template)
+    lex.variables.update(var)
+    if not syn.error:
+        semantiqueTree_template = sem.buildTree(syntaxTree_template)
+        result = semantiqueTree_template.eval()
+
+        with open(output, 'w') as file:
+            file.write(result)
